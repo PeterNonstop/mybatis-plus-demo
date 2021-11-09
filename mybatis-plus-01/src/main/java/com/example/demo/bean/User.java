@@ -1,5 +1,8 @@
 package com.example.demo.bean;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+
 /**
  * Created with IntelliJ IDEA.
  * To change it use File | Settings | Editor | File and Code Templates.
@@ -9,6 +12,13 @@ package com.example.demo.bean;
  * @description TODO
  */
 public class User {
+    /**
+     * 如果不加type = IdType.AUTO，会触发MP的自增机制，
+     * 会出现很大的数，比如：1457520642814455811
+     */
+    //@TableId(
+    //        type = IdType.AUTO
+    //)
     private String id;
     private String name;
     private String email;
