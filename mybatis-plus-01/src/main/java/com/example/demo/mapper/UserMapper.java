@@ -3,6 +3,8 @@ package com.example.demo.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.example.demo.bean.User;
 
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * To change it use File | Settings | Editor | File and Code Templates.
@@ -12,4 +14,6 @@ import com.example.demo.bean.User;
  * @description TODO
  */
 public interface UserMapper extends BaseMapper<User> {
+
+    public List<User> selectUsers();
 }

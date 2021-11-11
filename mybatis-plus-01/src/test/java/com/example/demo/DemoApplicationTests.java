@@ -1,5 +1,8 @@
 package com.example.demo;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.bean.User;
 import com.example.demo.mapper.UserMapper;
 import org.junit.jupiter.api.Test;
@@ -16,8 +19,44 @@ class DemoApplicationTests {
     @Autowired
     private UserMapper userMapper;
 
+
     @Test
-    void contextLoads() {
+    public void testPage() {
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        wrapper.gt("age", "26");
+
+        IPage<User> iPage = new Page<>();
+        // 设置分布的数据
+        // 第1页
+        iPage.setCurrent(1);
+        // 每页的记录数
+        iPage.setSize(12);
+
+        // ==>  Preparing: SELECT COUNT(*) FROM user WHERE (age > ?)
+        // ==>  Preparing: SELECT id,name,email,age FROM user WHERE (age > ?) LIMIT ?
+        IPage<User> result = userMapper.selectPage(iPage, wrapper);
+        // 获取分页后的记录
+        List<User> userList = result.getRecords();
+        for (User user : userList) {
+            System.out.println("user = " + user);
+        }
+
+        // 分页的信息
+        long pages = result.getPages();
+        System.out.println("页数： " + pages);
+        System.out.println("总记录数：" + result.getTotal());
+        System.out.println("当前页码：" + result.getCurrent());
+
+
+    }
+
+    @Test
+    void contextLoadCustMapper() {
+        List<User> users = userMapper.selectUsers();
+
+        for (User user : users) {
+            System.out.println("user = " + user);
+        }
     }
 
 
@@ -123,14 +162,14 @@ class DemoApplicationTests {
      */
     @Test
     public void testSelectByMap() {
-        Map<String, Object > map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         map.put("name", "741ac173");
         map.put("age", "28");
 
         // Preparing: SELECT id,name,email,age FROM user WHERE name = ? AND age = ?
         List<User> users = userMapper.selectByMap(map);
 
-        users.forEach(user ->{
+        users.forEach(user -> {
             System.out.println("user = " + user);
         });
     }
